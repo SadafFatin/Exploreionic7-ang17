@@ -1,0 +1,7 @@
+{
+  "name": "ionic7-ang17",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}
