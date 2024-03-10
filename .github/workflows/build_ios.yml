@@ -65,7 +65,7 @@ jobs:
       - name: Capacitor copy
         run: npx cap copy
       - name: Pod Install
-        run: pod install
+        run: cd ios then pod install --repo-update
       - name: Pod Setup
         run: pod setup
         
