@@ -64,7 +64,8 @@ jobs:
 
       - name: Capacitor copy
         run: npx cap copy
-
+      - name: Pod Setup
+        run: pod setup
       - name: Build project
         run: xcodebuild -workspace './ios/App/App.xcworkspace' -scheme App -destination generic/platform=iOS -archivePath App.xcarchive archive
 
