@@ -69,13 +69,7 @@ jobs:
       - name: Pod Setup
         run: pod setup
       - name: Signing Settings
-        run: post_install do |installer|
-            installer.pods_project.targets.each do |target|
-            target.build_configurations.each do |config|
-            config.build_settings["DEVELOPMENT_TEAM"] = "7GWKPZ38XK"
-            end
-            end
-            end
+        
              
 
       - name: Build project
