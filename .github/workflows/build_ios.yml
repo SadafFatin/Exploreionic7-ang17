@@ -64,11 +64,6 @@ jobs:
 
       - name: Capacitor copy
         run: npx cap copy
-      - name: Pod Install
-        run: cd ios then pod install --repo-update
-      - name: Pod Setup
-        run: pod setup
-      - name: Signing Settings
 
       - name: Build project
         run: xcodebuild -workspace './ios/App/App.xcworkspace' -scheme App -destination generic/platform=iOS -archivePath App.xcarchive archive
@@ -83,7 +78,7 @@ jobs:
           path: output/
           retention-days: 60
 
-      # For use on self-hosted runners, see
+      # For use on self-hosted runners, see 
       # https://docs.github.com/en/actions/deployment/deploying-xcode-applications/installing-an-apple-certificate-on-macos-runners-for-xcode-development
       #- name: Clean up keychain and provisioning profile
       #  if: ${{ always() }}
