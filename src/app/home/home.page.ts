@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { IonHeader, IonToolbar, IonTitle, IonContent } from '@ionic/angular/standalone';
+import { PostService } from '../service/post/post.service';
+import { finalize, map } from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -9,5 +11,41 @@ import { IonHeader, IonToolbar, IonTitle, IonContent } from '@ionic/angular/stan
   imports: [IonHeader, IonToolbar, IonTitle, IonContent],
 })
 export class HomePage {
-  constructor() {}
+  private postService = inject(PostService);
+  private hasLoaded = false;
+  constructor() {
+      this.loadPost();
+  }
+
+
+
+  loadPost(){
+    this.postService.getPosts().subscribe((result)=>{
+       console.log(result);
+    })
+    // .pipe(
+    //   finalize(() => {
+    //     this.hasLoaded= true;
+    //   }),
+    //   map(result=>{
+
+    //   })
+
+    // )
+    // .subscribe
+    // ( {
+    //   next: (data) => {
+    //     console.log(data);
+    //   },
+    //   error: (error) => {
+    //     //console.log(error);
+    //   },
+    //   complete: () => {
+    //     console.log('completes');
+    //   }
+    // })
+  }
+
+
 }
+

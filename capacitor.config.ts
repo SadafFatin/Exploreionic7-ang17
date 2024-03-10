@@ -1,8 +1,8 @@
 import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'io.ionic.starter',
-  appName: 'ionic7-ang17',
+  appId: 'com.alpharecon.mobile',
+  appName:'SecuRecon',
   webDir: 'www',
   server: {
     androidScheme: 'https'

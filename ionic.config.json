@@ -1,7 +1,7 @@
 {
-  "name": "ionic7-ang17",
+  "name": "com.alpharecon.mobile",
   "integrations": {
     "capacitor": {}
   },
-  "type": "angular-standalone"
+  "type": "angular"
 }
