@@ -65,7 +65,7 @@ steps:
     xcWorkspacePath: 'ios/App/App.xcworkspace'
     scheme: 'App'
     packageApp: true
-    signingOption: manual
+    signingOption: 'manual'
     signingIdentity: '$(APPLE_CERTIFICATE_SIGNING_IDENTITY)'
     provisioningProfileUuid: '$(APPLE_PROV_PROFILE_UUID)'
     teamId: '7GWKPZ38XK'
