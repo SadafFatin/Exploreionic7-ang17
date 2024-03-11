@@ -25,10 +25,7 @@ steps:
   inputs:
     script: |
       npm install --ignore-scripts
-      npm install typescript@4.6.4 --save-dev
-      npm i @capacitor/core
-      npm i -D @capacitor/cli
-      npm install @capacitor/ios
+      npm run build
       
 - task: CmdLine@2
   displayName: npm build
