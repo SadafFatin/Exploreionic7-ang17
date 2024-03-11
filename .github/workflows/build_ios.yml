@@ -64,14 +64,14 @@ jobs:
 
       - name: Capacitor copy
         run: npx cap copy
-      - name: Change directory
-        run: cd ./ios/App && ls
-      
-      - name: Pod Setup
-        run: pod setup && sudo gem install cocoapods
-      
-      - name: Goback
-        run: cd ../../
+      - name: Build and Test
+        run: |
+           xcodebuild \
+           -project [name_of_your_project] \
+           -scheme [your_scheme] \
+           -sdk iphonesimulator \
+           -destination 'platform=iOS Simulator,name=iPhone 14,OS=16.2' \
+            test || exit 1
 
       - name: Build project
         run: xcodebuild -workspace './ios/App/App.xcworkspace' -scheme App -destination generic/platform=iOS -archivePath App.xcarchive -configuration Release -allowProvisioningUpdates clean archive
