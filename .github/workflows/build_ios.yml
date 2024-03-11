@@ -69,9 +69,7 @@ jobs:
       
       - name: Pod Setup
         run: pod setup && sudo gem install cocoapods
-        
-      - name: Pod Install
-        #run: pod install --repo-update
+      
       - name: Goback
         run: cd ../../
 
