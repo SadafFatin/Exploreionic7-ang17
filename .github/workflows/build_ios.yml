@@ -74,13 +74,16 @@ jobs:
 
       - name: 🍻 Assemble IPA
         run: xcodebuild archive -archivePath App.xcarchive -exportArchive -exportOptionsPlist ./archive.plist -exportPath output -allowProvisioningUpdates
+      - name: Build and Test
+        run: |
+           xcodebuild \
+           -project './ios/App/App.xcodeproj' \
+           -scheme App \
+           -sdk iphonesimulator \
+           -destination 'platform=iOS Simulator,name=iPhone 14,OS=16.2' \
+            test || exit 1
 
-      - name: Upload release bundle
-        uses: actions/upload-artifact@v3
-        with:
-          name: app-ios
-          path: output/
-          retention-days: 60
+
 
       # For use on self-hosted runners, see
       # https://docs.github.com/en/actions/deployment/deploying-xcode-applications/installing-an-apple-certificate-on-macos-runners-for-xcode-development
