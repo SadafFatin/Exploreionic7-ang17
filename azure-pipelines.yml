@@ -56,3 +56,32 @@ steps:
   inputs:
     workingDirectory: 'ios/App'
     forceRepoUpdate: false
+
+- task: Xcode@5
+  displayName: 'Building IPA File'
+  inputs:
+    actions: 'build archive'
+    sdk: iphoneos
+    xcWorkspacePath: 'ios/App/App.xcworkspace'
+    scheme: 'App'
+    packageApp: true
+    signingOption: manual
+    signingIdentity: '$(APPLE_CERTIFICATE_SIGNING_IDENTITY)'
+    provisioningProfileUuid: '$(APPLE_PROV_PROFILE_UUID)'
+    teamId: '7GWKPZ38XK'
+    xcodeVersion: "default"
+  
+
+- task: CmdLine@2
+  displayName: Naming ipa file
+  inputs:
+    script: |
+        appversion=$(cat package.json | head | grep -w "version" | awk '{print $2}' |cut -c 2-6)
+        mv /Users/runner/work/1/s/output/App.ipa /Users/runner/work/1/s/output/myapp_${{parameters.environment}}_${appversion}.ipa
+
+- task: CopyFiles@2
+  displayName: 'Copy Files to: $(build.artifactStagingDirectory)' 
+  inputs:
+    SourceFolder: '/Users/runner/work/1/s/output'
+    Contents: '*.ipa'
+    TargetFolder: '$(Build.ArtifactStagingDirectory)'
