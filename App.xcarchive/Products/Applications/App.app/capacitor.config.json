@@ -1,0 +1,8 @@
+{
+	"appId": "com.alpharecon.mobile",
+	"appName": "SecuRecon",
+	"webDir": "www",
+	"server": {
+		"androidScheme": "https"
+	}
+}
