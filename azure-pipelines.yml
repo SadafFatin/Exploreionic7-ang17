@@ -1,20 +1,61 @@
-# Xcode
-# Build, test, and archive an Xcode workspace on macOS.
-# Add steps that install certificates, test, sign, and distribute an app, save build artifacts, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/languages/xcode
-
-trigger:
-- main
-
 pool:
-  vmImage: 'macos-latest'
+    vmImage: macOS-12
 
+parameters:
+  - name: environment
+    displayName: Configuration based on env
+    type: string
+    default: DEV
+    values:
+    - PROD
+    - UAT
+    - SIT
+    - DEV
+        
 steps:
-- task: Xcode@5
+     
+- task: NodeTool@0
+  displayName: install node version
   inputs:
-    actions: 'build'
-    scheme: ''
-    sdk: 'iphoneos'
-    configuration: 'Release'
-    xcWorkspacePath: '**/*.xcodeproj/project.xcworkspace'
-    xcodeVersion: 'default' # Options: 8, 9, 10, 11, 12, default, specifyPath
+    versionSource: 'spec'
+    versionSpec: '16.18.0'
+
+- task: CmdLine@2
+  displayName: install dependecies
+  inputs:
+    script: |
+      npm install --ignore-scripts
+      npm install typescript@4.6.4 --save-dev
+      npm i @capacitor/core
+      npm i -D @capacitor/cli
+      npm install @capacitor/ios
+      
+- task: CmdLine@2
+  displayName: npm build
+  inputs:
+    script: 'npm run ng build -- --c=${{ parameters.environment }}'
+
+- task: CmdLine@2
+  displayName: sync up android and iOS folder
+  inputs:
+    script: |
+        npx cap sync
+
+- task: InstallAppleCertificate@2
+  displayName: install apple signing certificate
+  inputs:
+    certSecureFile: 'Certificates_Distribution.p12'
+    certPwd: '123456'
+    keychain: 'temp'
+
+- task: InstallAppleProvisioningProfile@1
+  displayName: install apple provisioning profile
+  inputs:
+    provisioningProfileLocation: 'secureFiles'
+    provProfileSecureFile: 'Alpha_Recon_Mobile_Distribution.mobileprovision'
+
+- task: CocoaPods@0
+  displayName: install cocoapods
+  inputs:
+    workingDirectory: 'ios/App'
+    forceRepoUpdate: false
