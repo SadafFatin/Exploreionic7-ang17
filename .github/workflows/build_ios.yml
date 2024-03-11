@@ -65,14 +65,14 @@ jobs:
       - name: Capacitor copy
         run: npx cap copy
       - name: Change directory
-        run: cd ./ios/App/App && ls
+        run: cd ./ios/App && ls
       
       - name: Pod Setup
         run: pod setup
       - name: Pod Install
         run: pod install --repo-update
       - name: Goback
-        run: cd ../../../
+        run: cd ../../
 
       - name: Build project
         run: xcodebuild -workspace './ios/App/App.xcworkspace' -scheme App -destination generic/platform=iOS -archivePath App.xcarchive -configuration Release -allowProvisioningUpdates clean archive
