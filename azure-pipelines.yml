@@ -55,7 +55,7 @@ steps:
   displayName: install cocoapods
   inputs:
     workingDirectory: 'ios/App'
-    forceRepoUpdate: false
+    forceRepoUpdate: true
 
 - task: Xcode@5
   displayName: 'Building IPA File'
@@ -65,7 +65,8 @@ steps:
     xcWorkspacePath: 'ios/App/App.xcworkspace'
     scheme: 'App'
     packageApp: true
-    signingOption: 'manual'
+    signingOption: manual
+    
     signingIdentity: '$(APPLE_CERTIFICATE_SIGNING_IDENTITY)'
     provisioningProfileUuid: '$(APPLE_PROV_PROFILE_UUID)'
     teamId: '7GWKPZ38XK'
