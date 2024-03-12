@@ -72,6 +72,12 @@ steps:
     teamId: '7GWKPZ38XK'
     xcodeVersion: "default"
   
+- task: CmdLine@2
+  displayName: Naming ipa file
+  inputs:
+    script: |
+        appversion=$(cat package.json | head | grep -w "version" | awk '{print $2}' |cut -c 2-6)
+        mv /Users/runner/work/1/s/output/App.ipa /Users/runner/work/1/s/output/SecuRecon_${{parameters.environment}}_${appversion}.ipa
 - task: CopyFiles@2
   displayName: 'Copy Files to: $(build.artifactStagingDirectory)' 
   inputs:
