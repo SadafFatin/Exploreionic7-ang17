@@ -73,11 +73,14 @@ steps:
     xcodeVersion: "default"
   
 
-
-
 - task: CopyFiles@2
   displayName: 'Copy Files to: $(build.artifactStagingDirectory)' 
   inputs:
     SourceFolder: '/Users/runner/work/1/s/output'
     Contents: '*.ipa'
     TargetFolder: '$(Build.ArtifactStagingDirectory)'
+- task: PublishBuildArtifacts@1
+  inputs:
+    pathtoPublish: '$(build.artifactStagingDirectory)/output/$(sdk)/$(configuration)' 
+    artifactName: 'drop' 
+    publishLocation: 'Container'
