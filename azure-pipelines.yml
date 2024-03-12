@@ -97,7 +97,7 @@ steps:
     authType: 'ApiKey'
     apiKeyId: 'XR8RYLLL4J'
     apiKeyIssuerId: '69a6de87-c6e0-47e3-e053-5b8c7c11a4d1'
-    apitoken: 'MIGTAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBHkwdwIBAQQgkgE6DmL2jhNn4ysc f9X9uFM26HRqQfLmYgftdHtNlr2gCgYIKoZIzj0DAQehRANCAARWBRIEzOsCZl0C FwahsWv1gWxuUfIh33Wkq1SrIXp6Ew5IwK7ZV1VFDhhK2XvgL7JekvwC4kDYiUhZ 8keo+f6n'
+    apitoken: 'MIGTAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBHkwdwIBAQQgkgE6DmL2jhNn4yscf9X9uFM26HRqQfLmYgftdHtNlr2gCgYIKoZIzj0DAQehRANCAARWBRIEzOsCZl0CFwahsWv1gWxuUfIh33Wkq1SrIXp6Ew5IwK7ZV1VFDhhK2XvgL7JekvwC4kDYiUhZ8keo+f6n'
     releaseTrack: 'TestFlight'
     appIdentifier: 'com.alpharecon.mobile'
     appType: 'iOS'
