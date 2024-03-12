@@ -65,8 +65,8 @@ steps:
     xcWorkspacePath: 'ios/App/App.xcworkspace'
     scheme: 'App'
     packageApp: true
+    exportPath: 'output'
     signingOption: manual
-    
     signingIdentity: '$(APPLE_CERTIFICATE_SIGNING_IDENTITY)'
     provisioningProfileUuid: '$(APPLE_PROV_PROFILE_UUID)'
     teamId: '7GWKPZ38XK'
@@ -78,7 +78,6 @@ steps:
     SourceFolder: '/Users/runner/work/1/s/output'
     Contents: '*.ipa'
     TargetFolder: '$(Build.ArtifactStagingDirectory)'
-
 
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifact: drop'
