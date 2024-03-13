@@ -5,12 +5,12 @@ parameters:
   - name: environment
     displayName: Configuration based on env
     type: string
-    default: DEV
+    default: dev
     values:
-    - PROD
-    - UAT
-    - SIT
-    - DEV
+    - production
+    - qa
+    - main
+    - dev
 
 steps:
 
