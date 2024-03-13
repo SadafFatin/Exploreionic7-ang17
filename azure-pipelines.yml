@@ -1,0 +1,103 @@
+pool:
+    vmImage: macOS-12
+
+parameters:
+  - name: environment
+    displayName: Configuration based on env
+    type: string
+    default: dev
+    values:
+    - production
+    - qa
+    - main
+    - dev
+
+steps:
+
+- task: NodeTool@0
+  displayName: install node version
+  inputs:
+    versionSource: 'spec'
+    versionSpec: '19.0'
+
+- task: CmdLine@2
+  displayName: install dependecies
+  inputs:
+    script: |
+      npm install --ignore-scripts
+      npm run build
+
+- task: CmdLine@2
+  displayName: npm build
+  inputs:
+    script: 'npm run ng build -- --c=${{ parameters.environment }}'
+
+- task: CmdLine@2
+  displayName: sync up android and iOS folder
+  inputs:
+    script: |
+        npx cap sync
+
+- task: InstallAppleCertificate@2
+  displayName: install apple signing certificate
+  inputs:
+    certSecureFile: 'Certificates_Distribution.p12'
+    certPwd: '123456'
+    keychain: 'temp'
+
+- task: InstallAppleProvisioningProfile@1
+  displayName: install apple provisioning profile
+  inputs:
+    provisioningProfileLocation: 'secureFiles'
+    provProfileSecureFile: 'Alpha_Recon_Mobile_Distribution.mobileprovision'
+
+- task: CocoaPods@0
+  displayName: install cocoapods
+  inputs:
+    workingDirectory: 'ios/App'
+    forceRepoUpdate: true
+
+- task: Xcode@5
+  displayName: 'Building IPA File'
+  inputs:
+    actions: 'build archive'
+    sdk: iphoneos
+    xcWorkspacePath: 'ios/App/App.xcworkspace'
+    scheme: 'App'
+    packageApp: true
+    exportPath: 'output'
+    signingOption: manual
+    signingIdentity: '$(APPLE_CERTIFICATE_SIGNING_IDENTITY)'
+    provisioningProfileUuid: '$(APPLE_PROV_PROFILE_UUID)'
+    teamId: '7GWKPZ38XK'
+    xcodeVersion: "default"
+
+- task: CmdLine@2
+  displayName: Naming ipa file
+  inputs:
+    script: |
+        appversion=$(cat package.json | head | grep -w "version" | awk '{print $2}' |cut -c 2-6)
+        mv /Users/runner/work/1/s/output/App.ipa /Users/runner/work/1/s/output/SecuRecon_${{parameters.environment}}_${appversion}.ipa
+- task: CopyFiles@2
+  displayName: 'Copy Files to: $(build.artifactStagingDirectory)'
+  inputs:
+    SourceFolder: '/Users/runner/work/1/s/output'
+    Contents: '*.ipa'
+    TargetFolder: '$(Build.ArtifactStagingDirectory)'
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact: drop'
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'ios'
+    publishLocation: 'Container'
+
+- task: AppStoreRelease@1
+  inputs:
+    authType: 'ApiKey'
+    apiKeyId: 'XR8RYLLL4J'
+    apiKeyIssuerId: '69a6de87-c6e0-47e3-e053-5b8c7c11a4d1'
+    apitoken: 'LS0tLS1CRUdJTiBQUklWQVRFIEtFWS0tLS0tCk1JR1RBZ0VBTUJNR0J5cUdTTTQ5QWdFR0NDcUdTTTQ5QXdFSEJIa3dkd0lCQVFRZ2tnRTZEbUwyamhObjR5c2MKZjlYOXVGTTI2SFJxUWZMbVlnZnRkSHRObHIyZ0NnWUlLb1pJemowREFRZWhSQU5DQUFSV0JSSUV6T3NDWmwwQwpGd2Foc1d2MWdXeHVVZkloMzNXa3ExU3JJWHA2RXc1SXdLN1pWMVZGRGhoSzJYdmdMN0pla3Z3QzRrRFlpVWhaCjhrZW8rZjZuCi0tLS0tRU5EIFBSSVZBVEUgS0VZLS0tLS0='
+    releaseTrack: 'TestFlight'
+    appIdentifier: 'com.alpharecon.mobile'
+    appType: 'iOS'
